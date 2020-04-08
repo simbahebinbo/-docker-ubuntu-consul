@@ -11,12 +11,9 @@ RUN mkdir -p /var/log/supervisor
 RUN sed -i '/logfile=.*/ i\nodaemon=true'  /etc/supervisor/supervisord.conf
 
 WORKDIR /opt/consul/
-RUN apt-get install -y unzip
-RUN wget -q https://releases.hashicorp.com/consul/0.5.0/0.5.0_linux_amd64.zip
-RUN unzip 0.5.0_linux_amd64.zip;ln -s /opt/consul/consul /usr/bin/consul
-RUN wget -q https://releases.hashicorp.com/consul/0.5.0/0.5.0_web_ui.zip
-RUN unzip 0.5.0_web_ui.zip
-RUN rm -f 0.5.0_linux_amd64.zip 0.5.0_web_ui.zip
+ADD consul /opt/consul/consul
+ADD dist /opt/consul/dist
+RUN ln -s /opt/consul/consul /usr/bin/consul
 RUN mkdir -p /etc/consul.d
 ADD etc/supervisor/conf.d/consul.conf /etc/supervisor/conf.d/consul.conf
 ADD opt/qnib/bin /opt/qnib/bin
