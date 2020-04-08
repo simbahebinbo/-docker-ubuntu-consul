@@ -1,7 +1,5 @@
 FROM ubuntu:14.04
 
-MAINTAINER "Christian Kniep <christian@qnib.org>
-
 ## Update repos
 RUN apt-get update
 RUN apt-get install -y wget curl git-core vim-common
@@ -14,9 +12,9 @@ RUN sed -i '/logfile=.*/ i\nodaemon=true'  /etc/supervisor/supervisord.conf
 
 WORKDIR /opt/consul/
 RUN apt-get install -y unzip
-RUN wget -q https://dl.bintray.com/mitchellh/consul/0.5.0_linux_amd64.zip
+RUN wget -q https://releases.hashicorp.com/consul/0.5.0/0.5.0_linux_amd64.zip
 RUN unzip 0.5.0_linux_amd64.zip;ln -s /opt/consul/consul /usr/bin/consul
-RUN wget -q https://dl.bintray.com/mitchellh/consul/0.5.0_web_ui.zip
+RUN wget -q https://releases.hashicorp.com/consul/0.5.0/0.5.0_web_ui.zip
 RUN unzip 0.5.0_web_ui.zip
 RUN rm -f 0.5.0_linux_amd64.zip 0.5.0_web_ui.zip
 RUN mkdir -p /etc/consul.d
