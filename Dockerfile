@@ -36,12 +36,6 @@ RUN apt-get -y upgrade
 #支持中文
 RUN echo "zh_CN.UTF-8 UTF-8" > /etc/locale.gen && locale-gen zh_CN.UTF-8 en_US.UTF-8
 
-#修改主机名
-RUN echo "consul-consumer" > /proc/sys/kernel/hostname
-
-#解析主机名
-RUN echo "127.0.1.1 $(hostname)" >> /etc/hosts
-
 
 # Configure environment
 ENV SHELL /bin/bash
@@ -54,6 +48,7 @@ ENV USER_HOME /home/$NB_USER
 ENV WORK_DIR $USER_HOME/work
 ENV CONSUL_DIR $WORK_DIR/consul
 ENV CONSUL_BIN /usr/bin/consul
+ENV HOSTNAME consul-consumer
 
 
 # Create jovyan user with UID=1000 and in the 'users' group
@@ -61,6 +56,13 @@ ENV CONSUL_BIN /usr/bin/consul
 RUN useradd -p `openssl passwd 123456` -m -s $SHELL -u $NB_UID -G sudo $NB_USER
 #免密
 RUN echo "jovyan  ALL=(ALL:ALL) NOPASSWD: ALL" >> /etc/sudoers
+
+#修改主机名
+RUN echo "$HOSTNAME" > /etc/hostname
+RUN sysctl kernel.hostname=$(cat /etc/hostname)
+
+#解析主机名
+RUN echo "127.0.1.1 $HOSTNAME" >> /etc/hosts
 
 USER $NB_USER
 
