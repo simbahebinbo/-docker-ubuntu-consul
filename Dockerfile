@@ -2,6 +2,7 @@ FROM ubuntu:16.04
 
 USER root
 
+#静默安装
 ENV DEBIAN_FRONTEND noninteractive
 ENV DEBCONF_NOWARNINGS yes
 
@@ -47,13 +48,14 @@ ENV LC_ALL zh_CN.UTF-8
 ENV USER_HOME /home/$NB_USER
 ENV WORK_DIR $USER_HOME/work
 ENV CONSUL_DIR $WORK_DIR/consul
-ENV CONSUL_BIN /usr/bin/consul
+ENV CONSUL_BIN /usr/local/bin/consul
+ENV CONSUL_NODE_NAME consul-consumer
 
 
 # Create jovyan user with UID=1000 and in the 'users' group
 #用户名 jovyan  密码:123456
 RUN useradd -p `openssl passwd 123456` -m -s $SHELL -u $NB_UID -G sudo $NB_USER
-#免密
+#sudo时免密
 RUN echo "jovyan  ALL=(ALL:ALL) NOPASSWD: ALL" >> /etc/sudoers
 
 #解析主机名
@@ -67,28 +69,34 @@ RUN mkdir $WORK_DIR && mkdir $USER_HOME/.local
 #刷新库文件
 RUN sudo ldconfig
 
+#进入到工作目录
 WORKDIR $WORK_DIR
 
+#添加consul可执行文件
 ADD consul $CONSUL_BIN
 RUN sudo chmod +x $CONSUL_BIN && sudo chgrp $NB_USER $CONSUL_BIN && sudo chown $NB_USER $CONSUL_BIN
 
 #创建consul的各种目录
 RUN mkdir -p $CONSUL_DIR && mkdir -p $CONSUL_DIR/data && mkdir -p $CONSUL_DIR/config && mkdir -p $CONSUL_DIR/log && mkdir -p $CONSUL_DIR/scripts && mkdir -p $CONSUL_DIR/web
 
-ADD consul.json $CONSUL_DIR/config/consul.json
-RUN sudo chgrp $NB_USER $CONSUL_DIR/config/consul.json && sudo chown $NB_USER $CONSUL_DIR/config/consul.json
-
+#添加启动consul的脚本
 ADD start-consul.sh $WORK_DIR/start-consul.sh
 RUN sudo chmod +x $WORK_DIR/start-consul.sh && sudo chgrp $NB_USER $WORK_DIR/start-consul.sh && sudo chown $NB_USER $WORK_DIR/start-consul.sh
 
+#添加保持运行状态的脚本，用于调试
+#ADD idle.sh $WORK_DIR/idle.sh
+RUN sudo chmod +x $WORK_DIR/idle.sh && sudo chgrp $NB_USER $WORK_DIR/idle.sh && sudo chown $NB_USER $WORK_DIR/idle.sh
+
+#暴露端口
 EXPOSE 8300 8301 8301/udp 8302 8302/udp 8500 8600 8600/udp
 
+#暴露卷
 VOLUME $CONSUL_DIR
 
-CMD $SHELL $WORK_DIR/start-consul.sh >/dev/null 2>&1
+#启动consul
+CMD $SHELL $WORK_DIR/start-consul.sh ${CONSUL_BIN} ${WORK_DIR} ${CONSUL_DIR} ${CONSUL_NODE_NAME}
 
-#保持运行状态
-#ADD idle.sh $WORK_DIR/idle.sh
+#保持运行状态，用于调试
 #CMD $SHELL $WORK_DIR/idle.sh
 
 

@@ -1,4 +1,5 @@
 #!/bin/bash
 
-docker run --net=host consul-consumer
+#启动docker
 
+docker run --net=host consul-consumer
