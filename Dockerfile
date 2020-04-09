@@ -84,7 +84,7 @@ ADD start-consul.sh $WORK_DIR/start-consul.sh
 RUN sudo chmod +x $WORK_DIR/start-consul.sh && sudo chgrp $NB_USER $WORK_DIR/start-consul.sh && sudo chown $NB_USER $WORK_DIR/start-consul.sh
 
 #添加保持运行状态的脚本，用于调试
-#ADD idle.sh $WORK_DIR/idle.sh
+ADD idle.sh $WORK_DIR/idle.sh
 RUN sudo chmod +x $WORK_DIR/idle.sh && sudo chgrp $NB_USER $WORK_DIR/idle.sh && sudo chown $NB_USER $WORK_DIR/idle.sh
 
 #暴露端口
