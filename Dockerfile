@@ -80,8 +80,8 @@ RUN sudo chmod +x $CONSUL_BIN && sudo chgrp $NB_USER $CONSUL_BIN && sudo chown $
 RUN mkdir -p $CONSUL_DIR && mkdir -p $CONSUL_DIR/data && mkdir -p $CONSUL_DIR/config && mkdir -p $CONSUL_DIR/log && mkdir -p $CONSUL_DIR/scripts && mkdir -p $CONSUL_DIR/web
 
 #添加启动consul的脚本
-ADD start-consul.sh $WORK_DIR/start-consul.sh
-RUN sudo chmod +x $WORK_DIR/start-consul.sh && sudo chgrp $NB_USER $WORK_DIR/start-consul.sh && sudo chown $NB_USER $WORK_DIR/start-consul.sh
+ADD run-consul.sh $WORK_DIR/run-consul.sh
+RUN sudo chmod +x $WORK_DIR/run-consul.sh && sudo chgrp $NB_USER $WORK_DIR/run-consul.sh && sudo chown $NB_USER $WORK_DIR/run-consul.sh
 
 #添加保持运行状态的脚本，用于调试
 ADD idle.sh $WORK_DIR/idle.sh
@@ -94,7 +94,7 @@ EXPOSE 8300 8301 8301/udp 8302 8302/udp 8500 8600 8600/udp
 VOLUME $CONSUL_DIR
 
 #启动consul
-CMD $SHELL $WORK_DIR/start-consul.sh ${CONSUL_BIN} ${WORK_DIR} ${CONSUL_DIR} ${CONSUL_NODE_NAME}
+CMD $SHELL $WORK_DIR/run-consul.sh ${CONSUL_BIN} ${WORK_DIR} ${CONSUL_DIR} ${CONSUL_NODE_NAME}
 
 #保持运行状态，用于调试
 #CMD $SHELL $WORK_DIR/idle.sh
