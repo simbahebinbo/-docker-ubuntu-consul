@@ -84,15 +84,15 @@ RUN sudo chgrp $NB_USER $CONSUL_DIR/config/consul.json && sudo chown $NB_USER $C
 ADD start-consul.sh $WORK_DIR/start-consul.sh
 RUN sudo chmod +x $WORK_DIR/start-consul.sh && sudo chgrp $NB_USER $WORK_DIR/start-consul.sh && sudo chown $NB_USER $WORK_DIR/start-consul.sh
 
-RUN $SHELL $WORK_DIR/start-consul.sh
-
 EXPOSE 8300 8301 8301/udp 8302 8302/udp 8500 8600 8600/udp
 
 VOLUME $CONSUL_DIR
 
+CMD $SHELL $WORK_DIR/start-consul.sh
+
 #保持运行状态
-ADD idle.sh $WORK_DIR/idle.sh
-CMD $SHELL $WORK_DIR/idle.sh
+#ADD idle.sh $WORK_DIR/idle.sh
+#CMD $SHELL $WORK_DIR/idle.sh
 
 
 
