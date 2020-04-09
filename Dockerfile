@@ -115,7 +115,7 @@ VOLUME $WORK_DIR
 
 #保持运行状态
 ADD idle.sh $WORK_DIR/idle.sh
-CMD [ "$SHELL", "$WORK_DIR/idle.sh" ]
+CMD [ '$SHELL', '$WORK_DIR/idle.sh' ]
 
 
 
