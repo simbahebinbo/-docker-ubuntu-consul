@@ -1,2 +1,4 @@
-# docker-u_consul
-Ubuntu Image with supervisor and consul
+# docker-ubuntu-consul
+
+Ubuntu Image with circus and consul
+
