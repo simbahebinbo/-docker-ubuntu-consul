@@ -33,6 +33,5 @@ nohup ${CONSUL_BIN} agent \
 -data-dir=${CONSUL_DIR}/data \
 -log-file=${CONSUL_DIR}/log/${NODE_NAME}.log -log-level=INFO \
 -retry-join=172.18.18.141 -retry-join=172.18.18.142 -retry-join=172.18.18.143 -retry-join=172.18.18.144 -retry-join=172.18.18.145 -retry-join=172.18.18.146 \
--join=172.18.18.141 -join=172.18.18.142 -join=172.18.18.143 -join=172.18.18.144 -join=172.18.18.145 -join=172.18.18.146 \
-> /dev/null 2>&1 &
+-join=172.18.18.141 -join=172.18.18.142 -join=172.18.18.143 -join=172.18.18.144 -join=172.18.18.145 -join=172.18.18.146
 
