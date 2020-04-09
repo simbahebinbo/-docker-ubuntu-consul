@@ -56,9 +56,11 @@ RUN useradd -p `openssl passwd 123456` -m -s $SHELL -u $NB_UID -G sudo $NB_USER
 #免密
 RUN echo "jovyan  ALL=(ALL:ALL) NOPASSWD: ALL" >> /etc/sudoers
 
+#修改主机名
+RUN echo "consul-consumer" > /etc/hostname
+
 #解析主机名
 RUN echo "127.0.1.1 $(hostname)" >> /etc/hosts
-RUN echo "127.0.0.1 consul-consumer" >> /etc/hosts
 
 USER $NB_USER
 
@@ -82,9 +84,11 @@ RUN sudo chgrp $NB_USER $CONSUL_DIR/config/consul.json && sudo chown $NB_USER $C
 ADD start-consul.sh $WORK_DIR/start-consul.sh
 RUN sudo chmod +x $WORK_DIR/start-consul.sh && sudo chgrp $NB_USER $WORK_DIR/start-consul.sh && sudo chown $NB_USER $WORK_DIR/start-consul.sh
 
+RUN $SHELL $WORK_DIR/start-consul.sh
+
 EXPOSE 8300 8301 8301/udp 8302 8302/udp 8500 8600 8600/udp
 
-CMD $SHELL $WORK_DIR/start-consul.sh
+VOLUME $CONSUL_DIR
 
 #保持运行状态
 ADD idle.sh $WORK_DIR/idle.sh
