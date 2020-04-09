@@ -25,6 +25,7 @@ ${CONSUL} agent \
 -bootstrap-expect=0 \
 -advertise=${IP} -bind=${IP} -client=127.0.0.1 \
 -protocol=3 \
+-node=consul-consumer \
 -rejoin -retry-interval=30s \
 -data-dir=${CONSUL_DIR}/data \
 -log-file=${CONSUL_DIR}/log/consul.log -log-level=INFO \
