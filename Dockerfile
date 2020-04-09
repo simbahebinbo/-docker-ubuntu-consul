@@ -51,6 +51,8 @@ ENV LANGUAGE zh_CN.UTF-8
 ENV LC_ALL zh_CN.UTF-8
 ENV USER_HOME /home/$NB_USER
 ENV WORK_DIR $USER_HOME/work
+ENV CONSUL_DIR $WORK_DIR/consul
+ENV CONSUL_BIN /usr/bin/consul
 ENV TMP_DIR $USER_HOME/tmp
 
 
@@ -74,21 +76,14 @@ RUN sudo ldconfig
 
 WORKDIR $WORK_DIR
 
-VOLUME ["/home/jovyan/work"]
+ADD consul $CONSUL_BIN
+RUN sudo chmod +x $CONSUL_BIN
 
-ADD consul /usr/bin
-RUN sudo chmod +x /usr/bin/consul
-RUN mkdir -p /tmp/consul/data && mkdir -p /tmp/consul/config && mkdir -p /tmp/consul/log
+RUN mkdir -p $CONSUL_DIR
+RUN mkdir -p $CONSUL_DIR/data && mkdir -p $CONSUL_DIR/config && mkdir -p $CONSUL_DIR/log && mkdir -p $CONSUL_DIR/scripts && mkdir -p $CONSUL_DIR/web
 
-EXPOSE 8300 8301 8301/udp 8302 8302/udp 8500 8600 8600/udp
-
-RUN mkdir $WORK_DIR/consul
-ADD consul.json $WORK_DIR/consul.json
-#CMD nohup sh -c '/usr/bin/consul agent -bootstrap-expect=0 -data-dir=$WORK_DIR/consul -join=consul-2.sinnet.huobiidc.com:8500'
-
-#保持运行状态
-ADD idle.sh $TMP_DIR/idle.sh
-CMD [ "/bin/bash", "/home/jovyan/tmp/idle.sh" ]
+#ADD consul.json $CONSUL_DIR/config/consul.json
+CMD nohup sh -c '$CONSUL_BIN agent -bootstrap-expect=0 -data-dir=$CONSUL_DIR/data -join=consul-2.sinnet.huobiidc.com:8500'
 
 
 ### Install supervisor to herd the processes
@@ -103,9 +98,20 @@ CMD [ "/bin/bash", "/home/jovyan/tmp/idle.sh" ]
 #RUN ln -s /opt/consul/consul /usr/bin/consul
 #RUN mkdir -p /etc/consul.d
 #ADD etc/supervisor/conf.d/consul.conf /etc/supervisor/conf.d/consul.conf
-#ADD opt/qnib/bin /opt/qnib/bin
+ADD opt/qnib/bin /opt/qnib/bin
 #ADD etc/consul.json /etc/consul.json
 
 #CMD /usr/bin/supervisord -c /etc/supervisor/supervisord.conf
+
+EXPOSE 8300 8301 8301/udp 8302 8302/udp 8500 8600 8600/udp
+
+VOLUME $WORK_DIR
+
+#保持运行状态
+ADD idle.sh $TMP_DIR/idle.sh
+CMD [ "/bin/bash", "/home/jovyan/tmp/idle.sh" ]
+
+
+
 
 
