@@ -73,16 +73,22 @@ RUN mkdir $WORK_DIR && mkdir $USER_HOME/.local
 #刷新库文件
 RUN sudo ldconfig
 
+USER $NB_USER
 
 WORKDIR $WORK_DIR
 
 ADD consul $CONSUL_BIN
 RUN sudo chmod +x $CONSUL_BIN
+RUN sudo chgrp $NB_USER $CONSUL_BIN
+RUN sudo chown $NB_USER $CONSUL_BIN
 
 RUN mkdir -p $CONSUL_DIR
 RUN mkdir -p $CONSUL_DIR/data && mkdir -p $CONSUL_DIR/config && mkdir -p $CONSUL_DIR/log && mkdir -p $CONSUL_DIR/scripts && mkdir -p $CONSUL_DIR/web
 
 ADD consul.json $CONSUL_DIR/config/consul.json
+RUN sudo chgrp $NB_USER $CONSUL_DIR/config/consul.json
+RUN sudo chown $NB_USER $CONSUL_DIR/config/consul.json
+
 #CMD nohup sh -c '$CONSUL_BIN agent -bootstrap-expect=0 -data-dir=$CONSUL_DIR/data -join=172.18.18.142 -join=172.18.18.143 -join=172.18.18.144 -join=172.18.18.145 -join=172.18.18.146'
 
 
