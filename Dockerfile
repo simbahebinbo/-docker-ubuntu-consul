@@ -36,6 +36,12 @@ RUN apt-get -y upgrade
 #支持中文
 RUN echo "zh_CN.UTF-8 UTF-8" > /etc/locale.gen && locale-gen zh_CN.UTF-8 en_US.UTF-8
 
+#修改主机名
+RUN echo "consul-consumer" > /proc/sys/kernel/hostname
+
+#解析主机名
+RUN echo "127.0.1.1 $(hostname)" >> /etc/hosts
+
 
 # Configure environment
 ENV SHELL /bin/bash
@@ -55,12 +61,6 @@ ENV CONSUL_BIN /usr/bin/consul
 RUN useradd -p `openssl passwd 123456` -m -s $SHELL -u $NB_UID -G sudo $NB_USER
 #免密
 RUN echo "jovyan  ALL=(ALL:ALL) NOPASSWD: ALL" >> /etc/sudoers
-
-#修改主机名
-RUN echo "consul-consumer" > /etc/hostname
-
-#解析主机名
-RUN echo "127.0.1.1 $(hostname)" >> /etc/hosts
 
 USER $NB_USER
 
@@ -88,7 +88,7 @@ EXPOSE 8300 8301 8301/udp 8302 8302/udp 8500 8600 8600/udp
 
 VOLUME $CONSUL_DIR
 
-CMD $SHELL $WORK_DIR/start-consul.sh
+CMD $SHELL $WORK_DIR/start-consul.sh >/dev/null 2>&1
 
 #保持运行状态
 #ADD idle.sh $WORK_DIR/idle.sh
