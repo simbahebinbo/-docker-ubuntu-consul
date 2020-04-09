@@ -82,8 +82,8 @@ RUN sudo chmod +x $CONSUL_BIN
 RUN mkdir -p $CONSUL_DIR
 RUN mkdir -p $CONSUL_DIR/data && mkdir -p $CONSUL_DIR/config && mkdir -p $CONSUL_DIR/log && mkdir -p $CONSUL_DIR/scripts && mkdir -p $CONSUL_DIR/web
 
-#ADD consul.json $CONSUL_DIR/config/consul.json
-CMD nohup sh -c '$CONSUL_BIN agent -bootstrap-expect=0 -data-dir=$CONSUL_DIR/data -join=consul-2.sinnet.huobiidc.com:8500'
+ADD consul.json $CONSUL_DIR/config/consul.json
+#CMD nohup sh -c '$CONSUL_BIN agent -bootstrap-expect=0 -data-dir=$CONSUL_DIR/data -join=172.18.18.142 -join=172.18.18.143 -join=172.18.18.144 -join=172.18.18.145 -join=172.18.18.146'
 
 
 ### Install supervisor to herd the processes
