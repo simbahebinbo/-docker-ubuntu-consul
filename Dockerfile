@@ -114,8 +114,8 @@ EXPOSE 8300 8301 8301/udp 8302 8302/udp 8500 8600 8600/udp
 VOLUME $WORK_DIR
 
 #保持运行状态
-ADD idle.sh $TMP_DIR/idle.sh
-CMD [ "/bin/bash", "/home/jovyan/tmp/idle.sh" ]
+ADD idle.sh $WORK_DIR/idle.sh
+CMD [ $SHELL, $WORK_DIR/idle.sh ]
 
 
 
