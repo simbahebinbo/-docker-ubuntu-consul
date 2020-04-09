@@ -88,7 +88,7 @@ ADD start_consul.sh $WORK_DIR/start_consul.sh
 
 EXPOSE 8300 8301 8301/udp 8302 8302/udp 8500 8600 8600/udp
 
-VOLUME $WORK_DIR
+VOLUME $CONSUL_DIR
 
 CMD sudo systemctl restart circusd
 
