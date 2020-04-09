@@ -83,7 +83,7 @@ RUN mkdir -p $CONSUL_DIR && mkdir -p $CONSUL_DIR/data && mkdir -p $CONSUL_DIR/co
 ADD run-consul.sh $WORK_DIR/run-consul.sh
 RUN sudo chmod +x $WORK_DIR/run-consul.sh && sudo chgrp $NB_USER $WORK_DIR/run-consul.sh && sudo chown $NB_USER $WORK_DIR/run-consul.sh
 
-#添加保持运行状态的脚本
+#添加保持运行状态的脚本，用于调试
 ADD idle.sh $WORK_DIR/idle.sh
 RUN sudo chmod +x $WORK_DIR/idle.sh && sudo chgrp $NB_USER $WORK_DIR/idle.sh && sudo chown $NB_USER $WORK_DIR/idle.sh
 
@@ -96,7 +96,7 @@ VOLUME $CONSUL_DIR
 #启动consul
 CMD $SHELL $WORK_DIR/run-consul.sh ${CONSUL_BIN} ${WORK_DIR} ${CONSUL_DIR} ${CONSUL_NODE_NAME}
 
-#保持运行状态
+#保持运行状态，用于调试
 # CMD $SHELL $WORK_DIR/idle.sh
 
 
