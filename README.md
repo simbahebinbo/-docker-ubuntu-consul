@@ -20,13 +20,13 @@ $ ./build-docker.sh
 
 
 ```
-$ ./debug-docker.sh
+$ ./start-docker.sh
 ```
 
 * 调试docker镜像
 
 ```
-$ ./stop-docker.sh
+$ ./debug-docker.sh
 ```
 
 * 停止docker镜像
