@@ -51,7 +51,7 @@ ENV USER_HOME=/home/$NB_USER
 ENV WORK_DIR=$USER_HOME/work
 ENV CONSUL_DIR=$WORK_DIR/consul
 ENV CONSUL_BIN=/usr/local/bin/consul
-ENV APP_NAME=consul-consumer
+ENV APP_NAME=example
 
 
 # Create jovyan user with UID=1000 and in the 'users' group
