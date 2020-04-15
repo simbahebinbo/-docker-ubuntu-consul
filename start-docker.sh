@@ -2,4 +2,4 @@
 
 #启动docker
 
-docker run --net=host consul-consumer
+docker run -d --net=host consul-consumer
