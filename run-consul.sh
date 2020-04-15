@@ -25,11 +25,10 @@ NODE_IP=$(ip -f inet address | grep inet | grep eth0 | awk '{print $2}' | awk -F
 # 只允许当前ip注册，即只允许该容器内的应用程序注册到该consul节点
 # 以 client 模式启动
 # 加入到 server 模式 的节点组成的集群
-nohup ${CONSUL_BIN} agent \
+${CONSUL_BIN} agent \
 -pid-file=${NODE_PIDFILE} \
 -bootstrap-expect=0 \
 -advertise=${NODE_IP} -bind=${NODE_IP} -client=${LOCAL_IP} \
--protocol=3 \
 -node=${NODE_NAME} \
 -data-dir=${CONSUL_DIR}/data \
 -log-file=${CONSUL_DIR}/log/${NODE_NAME}.log -log-level=INFO \
