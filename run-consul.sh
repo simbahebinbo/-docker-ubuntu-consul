@@ -8,8 +8,10 @@ CONSUL_BIN=$1
 WORK_DIR=$2
 #consul的目录
 CONSUL_DIR=$3
+#应用程序名
+APP_NAME=$4
 #节点名
-NODE_NAME=$4
+NODE_NAME=consul-client-${APP_NAME}
 #进程文件
 NODE_PIDFILE=${WORK_DIR}/consul.pid
 #网卡名

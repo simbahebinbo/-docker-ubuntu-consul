@@ -51,7 +51,7 @@ ENV USER_HOME=/home/$NB_USER
 ENV WORK_DIR=$USER_HOME/work
 ENV CONSUL_DIR=$WORK_DIR/consul
 ENV CONSUL_BIN=/usr/local/bin/consul
-ENV CONSUL_NODE_NAME=consul-consumer
+ENV APP_NAME=consul-consumer
 
 
 # Create jovyan user with UID=1000 and in the 'users' group
@@ -107,7 +107,7 @@ EXPOSE 8300/tcp 8301/tcp 8301/udp 8302/tcp 8302/udp 8500/tcp 8600/tcp 8600/udp
 VOLUME $CONSUL_DIR
 
 #启动consul
-CMD $SHELL $WORK_DIR/run-consul.sh ${CONSUL_BIN} ${WORK_DIR} ${CONSUL_DIR} ${CONSUL_NODE_NAME}
+CMD $SHELL $WORK_DIR/run-consul.sh ${CONSUL_BIN} ${WORK_DIR} ${CONSUL_DIR} ${APP_NAME}
 
 #保持运行状态，用于调试
 # CMD $SHELL $WORK_DIR/idle.sh
