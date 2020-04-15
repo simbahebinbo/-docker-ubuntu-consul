@@ -13,6 +13,7 @@ RUN apt-get update && apt-get install --assume-yes apt-utils
 RUN apt-get install -yq --no-install-recommends build-essential
 RUN apt-get install -yq --no-install-recommends pkg-config
 
+
 #权限
 RUN apt-get install -yq --no-install-recommends sudo
 
@@ -27,6 +28,7 @@ RUN apt-get install -yq --no-install-recommends vim
 #网络
 RUN apt-get install -yq --no-install-recommends iputils-ping
 RUN apt-get install -yq --no-install-recommends net-tools
+RUN apt-get install -yq --no-install-recommends iproute2
 
 #中文支持
 RUN apt-get install -yq --no-install-recommends locales

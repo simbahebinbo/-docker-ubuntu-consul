@@ -18,7 +18,7 @@ ADDR=eth0
 LOCAL_IP=127.0.0.1
 
 #获取容器IP
-NODE_IP=$(/sbin/ifconfig ${ADDR} | /bin/grep inet | /bin/grep -v ${LOCAL_IP} | /bin/grep -v inet6 | /usr/bin/awk '{print $2}' | /usr/bin/tr -d "addr:")
+NODE_IP=$(ip -f inet address | grep inet | /bin/grep eth0 | awk '{print $2}' | awk -F\/ '{print $1}')
 
 # 只允许当前ip注册，即只允许该容器内的应用程序注册到该consul节点
 # 以 client 模式启动
