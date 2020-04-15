@@ -107,10 +107,10 @@ EXPOSE 8300/tcp 8301/tcp 8301/udp 8302/tcp 8302/udp 8500/tcp 8600/tcp 8600/udp
 VOLUME $CONSUL_DIR
 
 #启动consul
-CMD $SHELL $WORK_DIR/run-consul.sh ${CONSUL_BIN} ${WORK_DIR} ${CONSUL_DIR} ${APP_NAME}
+ENTRYPOINT $SHELL $WORK_DIR/run-consul.sh ${CONSUL_BIN} ${WORK_DIR} ${CONSUL_DIR} ${APP_NAME}
 
 #保持运行状态，用于调试
-# CMD $SHELL $WORK_DIR/idle.sh
+# ENTRYPOINT $SHELL $WORK_DIR/idle.sh
 
 
 
