@@ -39,17 +39,17 @@ RUN echo "zh_CN.UTF-8 UTF-8" > /etc/locale.gen && locale-gen zh_CN.UTF-8 en_US.U
 
 
 # Configure environment
-ENV SHELL /bin/bash
-ENV NB_USER jovyan
-ENV NB_UID 1000
-ENV LANG zh_CN.UTF-8
-ENV LANGUAGE zh_CN.UTF-8
-ENV LC_ALL zh_CN.UTF-8
-ENV USER_HOME /home/$NB_USER
-ENV WORK_DIR $USER_HOME/work
-ENV CONSUL_DIR $WORK_DIR/consul
-ENV CONSUL_BIN /usr/local/bin/consul
-ENV CONSUL_NODE_NAME consul-consumer
+ENV SHELL=/bin/bash
+ENV NB_USER=jovyan
+ENV NB_UID=1000
+ENV LANG=zh_CN.UTF-8
+ENV LANGUAGE=zh_CN.UTF-8
+ENV LC_ALL=zh_CN.UTF-8
+ENV USER_HOME=/home/$NB_USER
+ENV WORK_DIR=$USER_HOME/work
+ENV CONSUL_DIR=$WORK_DIR/consul
+ENV CONSUL_BIN=/usr/local/bin/consul
+ENV CONSUL_NODE_NAME=consul-consumer
 
 
 # Create jovyan user with UID=1000 and in the 'users' group
@@ -77,7 +77,12 @@ ADD consul $CONSUL_BIN
 RUN sudo chmod +x $CONSUL_BIN && sudo chgrp $NB_USER $CONSUL_BIN && sudo chown $NB_USER $CONSUL_BIN
 
 #创建consul的各种目录
-RUN mkdir -p $CONSUL_DIR && mkdir -p $CONSUL_DIR/data && mkdir -p $CONSUL_DIR/config && mkdir -p $CONSUL_DIR/log && mkdir -p $CONSUL_DIR/scripts && mkdir -p $CONSUL_DIR/web
+RUN mkdir -p $CONSUL_DIR && sudo chgrp $NB_USER $CONSUL_DIR && sudo chown $NB_USER $CONSUL_DIR
+RUN mkdir -p $CONSUL_DIR/data && sudo chgrp $NB_USER $CONSUL_DIR/data && sudo chown $NB_USER $CONSUL_DIR/data
+RUN mkdir -p $CONSUL_DIR/config && sudo chgrp $NB_USER $CONSUL_DIR/config && sudo chown $NB_USER $CONSUL_DIR/config
+RUN mkdir -p $CONSUL_DIR/log && sudo chgrp $NB_USER $CONSUL_DIR/log && sudo chown $NB_USER $CONSUL_DIR/log
+RUN mkdir -p $CONSUL_DIR/scripts && sudo chgrp $NB_USER $CONSUL_DIR/scripts && sudo chown $NB_USER $CONSUL_DIR/scripts
+RUN mkdir -p $CONSUL_DIR/web && sudo chgrp $NB_USER $CONSUL_DIR/web && sudo chown $NB_USER $CONSUL_DIR/web
 
 #添加启动consul的脚本
 ADD run-consul.sh $WORK_DIR/run-consul.sh
