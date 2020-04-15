@@ -12,8 +12,6 @@ CONSUL_DIR=$3
 APP_NAME=$4
 #节点名
 NODE_NAME=consul-client-${APP_NAME}
-#进程文件
-NODE_PIDFILE=${WORK_DIR}/consul.pid
 #网卡名
 ADDR=eth0
 #本地IP
@@ -26,7 +24,6 @@ NODE_IP=$(ip -f inet address | grep inet | grep eth0 | awk '{print $2}' | awk -F
 # 以 client 模式启动
 # 加入到 server 模式 的节点组成的集群
 ${CONSUL_BIN} agent \
--pid-file=${NODE_PIDFILE} \
 -bootstrap-expect=0 \
 -advertise=${NODE_IP} -bind=${NODE_IP} -client=${LOCAL_IP} \
 -node=${NODE_NAME} \
