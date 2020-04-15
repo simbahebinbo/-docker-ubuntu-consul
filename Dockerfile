@@ -77,12 +77,18 @@ ADD consul $CONSUL_BIN
 RUN sudo chmod +x $CONSUL_BIN && sudo chgrp $NB_USER $CONSUL_BIN && sudo chown $NB_USER $CONSUL_BIN
 
 #创建consul的各种目录
-RUN mkdir -p $CONSUL_DIR && sudo chgrp $NB_USER $CONSUL_DIR && sudo chown $NB_USER $CONSUL_DIR
-RUN mkdir -p $CONSUL_DIR/data && sudo chgrp $NB_USER $CONSUL_DIR/data && sudo chown $NB_USER $CONSUL_DIR/data
-RUN mkdir -p $CONSUL_DIR/config && sudo chgrp $NB_USER $CONSUL_DIR/config && sudo chown $NB_USER $CONSUL_DIR/config
-RUN mkdir -p $CONSUL_DIR/log && sudo chgrp $NB_USER $CONSUL_DIR/log && sudo chown $NB_USER $CONSUL_DIR/log
-RUN mkdir -p $CONSUL_DIR/scripts && sudo chgrp $NB_USER $CONSUL_DIR/scripts && sudo chown $NB_USER $CONSUL_DIR/scripts
-RUN mkdir -p $CONSUL_DIR/web && sudo chgrp $NB_USER $CONSUL_DIR/web && sudo chown $NB_USER $CONSUL_DIR/web
+RUN mkdir -p $CONSUL_DIR 
+RUN sudo chmod +w $CONSUL_DIR && sudo chgrp $NB_USER $CONSUL_DIR && sudo chown $NB_USER $CONSUL_DIR
+RUN mkdir -p $CONSUL_DIR/data 
+RUN sudo chmod +w $CONSUL_DIR/data && sudo chgrp $NB_USER $CONSUL_DIR/data && sudo chown $NB_USER $CONSUL_DIR/data
+RUN mkdir -p $CONSUL_DIR/config 
+RUN sudo chmod +w $CONSUL_DIR/config && sudo chgrp $NB_USER $CONSUL_DIR/config && sudo chown $NB_USER $CONSUL_DIR/config
+RUN mkdir -p $CONSUL_DIR/log 
+RUN sudo chmod +w $CONSUL_DIR/log && sudo chgrp $NB_USER $CONSUL_DIR/log && sudo chown $NB_USER $CONSUL_DIR/log
+RUN mkdir -p $CONSUL_DIR/scripts 
+RUN sudo chmod +w $CONSUL_DIR/scripts && sudo chgrp $NB_USER $CONSUL_DIR/scripts && sudo chown $NB_USER $CONSUL_DIR/scripts
+RUN mkdir -p $CONSUL_DIR/web 
+RUN sudo chmod +w $CONSUL_DIR/web && sudo chgrp $NB_USER $CONSUL_DIR/web && sudo chown $NB_USER $CONSUL_DIR/web
 
 #添加启动consul的脚本
 ADD run-consul.sh $WORK_DIR/run-consul.sh
