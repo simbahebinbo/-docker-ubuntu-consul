@@ -22,7 +22,9 @@ LOCAL_IP=127.0.0.1
 #获取容器IP
 NODE_IP=$(ip -f inet address | grep inet | grep eth0 | awk '{print $2}' | awk -F\/ '{print $1}')
 
-
+# 只允许当前ip注册，即只允许该容器内的应用程序注册到该consul节点
+# 以 client 模式启动
+# 加入到 server 模式 的节点组成的集群
 EXEC_SCRIPT="${CONSUL_BIN} agent -bootstrap-expect=0 -advertise=${NODE_IP} -bind=${NODE_IP} -client=${LOCAL_IP} -node=${NODE_NAME} -data-dir=${CONSUL_DIR}/data -log-file=${CONSUL_DIR}/log/${APP_NAME}.log -log-level=INFO" 
 
 for consul_server in  $(echo ${CONSUL_SERVERS} | tr ',' ' ') 
@@ -31,9 +33,5 @@ do
     EXEC_SCRIPT=${EXEC_SCRIPT}" -join="${SERVER_IP}
 done
 
-
-# 只允许当前ip注册，即只允许该容器内的应用程序注册到该consul节点
-# 以 client 模式启动
-# 加入到 server 模式 的节点组成的集群
 exec ${EXEC_SCRIPT}
 
