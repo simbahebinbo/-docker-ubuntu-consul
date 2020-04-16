@@ -2,4 +2,4 @@
 
 # 构建docker镜像
 
-docker build --build-arg CONSUL_NODES=consul-1.sinnet.huobiidc.com:8500,consul-2.sinnet.huobiidc.com:8500,consul-3.sinnet.huobiidc.com:8500,consul-4.sinnet.huobiidc.com:8500,consul-5.sinnet.huobiidc.com:8500,consul-6.sinnet.huobiidc.com:8500 -t consul-consumer .
+docker build --build-arg CONSUL_NODES=172.18.18.141:8500,172.18.18.142:8500,172.18.18.143:8500,172.18.18.144:8500,172.18.18.145:8500,172.18.18.146:8500 -t consul-consumer .
