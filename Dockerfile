@@ -107,7 +107,7 @@ EXPOSE 8300/tcp 8301/tcp 8301/udp 8302/tcp 8302/udp 8500/tcp 8600/tcp 8600/udp
 VOLUME $CONSUL_DIR
 
 #启动consul
-ENTRYPOINT $SHELL $WORK_DIR/run-consul.sh ${CONSUL_BIN} ${WORK_DIR} ${CONSUL_DIR} ${APP_NAME}
+ENTRYPOINT [ "/home/jovyan/work/run-consul.sh", "/usr/local/bin/consul", "/home/jovyan/work", "/home/jovyan/work/consul", "example" ]
 
 #保持运行状态，用于调试
 # ENTRYPOINT $SHELL $WORK_DIR/idle.sh

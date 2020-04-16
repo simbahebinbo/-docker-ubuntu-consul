@@ -28,7 +28,7 @@ ${CONSUL_BIN} agent \
 -advertise=${NODE_IP} -bind=${NODE_IP} -client=${LOCAL_IP} \
 -node=${NODE_NAME} \
 -data-dir=${CONSUL_DIR}/data \
--log-file=${CONSUL_DIR}/log/${NODE_NAME}.log -log-level=INFO \
+-log-file=${CONSUL_DIR}/log/${APP_NAME}.log -log-level=INFO \
 -join=172.18.18.141 -join=172.18.18.142 -join=172.18.18.143 -join=172.18.18.144 -join=172.18.18.145 -join=172.18.18.146
 
 
