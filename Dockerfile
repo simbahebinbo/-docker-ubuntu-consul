@@ -48,11 +48,7 @@ ENV LANG=zh_CN.UTF-8
 ENV LANGUAGE=zh_CN.UTF-8
 ENV LC_ALL=zh_CN.UTF-8
 ENV USER_HOME=/home/$NB_USER
-ENV WORK_DIR=$USER_HOME/work
-ENV CONSUL_DIR=$WORK_DIR/consul
-ENV CONSUL_BIN=/usr/local/bin/consul
-ENV TINI_BIN=/usr/local/bin/tini
-ENV APP_NAME=example
+
 
 
 # Create jovyan user with UID=1000 and in the 'users' group
@@ -65,6 +61,18 @@ RUN echo "jovyan  ALL=(ALL:ALL) NOPASSWD: ALL" >> /etc/sudoers
 RUN echo "127.0.1.1 $(hostname)" >> /etc/hosts
 
 USER $NB_USER
+
+#接收传递过来的参数
+ARG CONSUL_NODES
+
+
+ENV WORK_DIR=$USER_HOME/work
+ENV CONSUL_DIR=$WORK_DIR/consul
+ENV CONSUL_BIN=/usr/local/bin/consul
+ENV TINI_BIN=/usr/local/bin/tini
+ENV APP_NAME=example
+ENV RUN_SHELL=run.sh
+ENV CONSUL_SERVERS=${CONSUL_NODES}
 
 # Setup jovyan home directory
 RUN mkdir $WORK_DIR && mkdir $USER_HOME/.local
@@ -98,8 +106,8 @@ RUN mkdir -p $CONSUL_DIR/web
 RUN sudo chmod +w $CONSUL_DIR/web && sudo chgrp $NB_USER $CONSUL_DIR/web && sudo chown $NB_USER $CONSUL_DIR/web
 
 #添加启动consul的脚本
-ADD run-consul.sh $WORK_DIR/run-consul.sh
-RUN sudo chmod +x $WORK_DIR/run-consul.sh && sudo chgrp $NB_USER $WORK_DIR/run-consul.sh && sudo chown $NB_USER $WORK_DIR/run-consul.sh
+ADD ${RUN_SHELL} $WORK_DIR/${RUN_SHELL}
+RUN sudo chmod +x $WORK_DIR/${RUN_SHELL} && sudo chgrp $NB_USER $WORK_DIR/${RUN_SHELL} && sudo chown $NB_USER $WORK_DIR/${RUN_SHELL}
 
 #添加保持运行状态的脚本，用于调试
 ADD idle.sh $WORK_DIR/idle.sh
@@ -112,7 +120,7 @@ EXPOSE 8300/tcp 8301/tcp 8301/udp 8302/tcp 8302/udp 8500/tcp 8600/tcp 8600/udp
 VOLUME $CONSUL_DIR
 
 #启动consul
-ENTRYPOINT exec $WORK_DIR/run-consul.sh ${CONSUL_BIN} ${WORK_DIR} ${CONSUL_DIR} ${APP_NAME}
+ENTRYPOINT exec $WORK_DIR/${RUN_SHELL} ${CONSUL_BIN} ${WORK_DIR} ${CONSUL_DIR} ${APP_NAME} ${CONSUL_SERVERS}
 
 #保持运行状态，用于调试
 # ENTRYPOINT exec $TINI_BIN -- $WORK_DIR/idle.sh
