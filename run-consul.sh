@@ -23,7 +23,7 @@ NODE_IP=$(ip -f inet address | grep inet | grep eth0 | awk '{print $2}' | awk -F
 # 只允许当前ip注册，即只允许该容器内的应用程序注册到该consul节点
 # 以 client 模式启动
 # 加入到 server 模式 的节点组成的集群
-${CONSUL_BIN} agent \
+exec ${CONSUL_BIN} agent \
 -bootstrap-expect=0 \
 -advertise=${NODE_IP} -bind=${NODE_IP} -client=${LOCAL_IP} \
 -node=${NODE_NAME} \
