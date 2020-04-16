@@ -51,6 +51,7 @@ ENV USER_HOME=/home/$NB_USER
 ENV WORK_DIR=$USER_HOME/work
 ENV CONSUL_DIR=$WORK_DIR/consul
 ENV CONSUL_BIN=/usr/local/bin/consul
+ENV TINI_BIN=/usr/local/bin/tini
 ENV APP_NAME=example
 
 
@@ -73,6 +74,10 @@ RUN sudo ldconfig
 
 #进入到工作目录
 WORKDIR $WORK_DIR
+
+# Add Tini
+ADD tini $TINI_BIN
+RUN sudo chmod +x $TINI_BIN && sudo chgrp $NB_USER $TINI_BIN && sudo chown $NB_USER $TINI_BIN
 
 #添加consul可执行文件
 ADD consul $CONSUL_BIN
@@ -107,10 +112,10 @@ EXPOSE 8300/tcp 8301/tcp 8301/udp 8302/tcp 8302/udp 8500/tcp 8600/tcp 8600/udp
 VOLUME $CONSUL_DIR
 
 #启动consul
-ENTRYPOINT exec $WORK_DIR/run-consul.sh ${CONSUL_BIN} ${WORK_DIR} ${CONSUL_DIR} ${APP_NAME}
+ENTRYPOINT exec $TINI_BIN -- $WORK_DIR/run-consul.sh ${CONSUL_BIN} ${WORK_DIR} ${CONSUL_DIR} ${APP_NAME}
 
 #保持运行状态，用于调试
-# ENTRYPOINT exec $WORK_DIR/idle.sh
+# ENTRYPOINT exec $TINI_BIN -- $WORK_DIR/idle.sh
 
 
 
