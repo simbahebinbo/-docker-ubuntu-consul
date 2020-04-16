@@ -112,7 +112,7 @@ EXPOSE 8300/tcp 8301/tcp 8301/udp 8302/tcp 8302/udp 8500/tcp 8600/tcp 8600/udp
 VOLUME $CONSUL_DIR
 
 #启动consul
-ENTRYPOINT exec $TINI_BIN -- $WORK_DIR/run-consul.sh ${CONSUL_BIN} ${WORK_DIR} ${CONSUL_DIR} ${APP_NAME}
+ENTRYPOINT exec $WORK_DIR/run-consul.sh ${CONSUL_BIN} ${WORK_DIR} ${CONSUL_DIR} ${APP_NAME}
 
 #保持运行状态，用于调试
 # ENTRYPOINT exec $TINI_BIN -- $WORK_DIR/idle.sh
