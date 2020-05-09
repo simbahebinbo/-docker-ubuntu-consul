@@ -114,7 +114,7 @@ ADD idle.sh $WORK_DIR/idle.sh
 RUN sudo chmod +x $WORK_DIR/idle.sh && sudo chgrp $NB_USER $WORK_DIR/idle.sh && sudo chown $NB_USER $WORK_DIR/idle.sh
 
 #暴露端口
-EXPOSE 8300/tcp 8301/tcp 8301/udp 8302/tcp 8302/udp 8500/tcp 8600/tcp 8600/udp
+EXPOSE 8300/tcp 8301/tcp 8301/udp 8302/tcp 8302/udp 8500/tcp 8500/udp 8600/tcp 8600/udp
 
 #暴露卷
 VOLUME $CONSUL_DIR
